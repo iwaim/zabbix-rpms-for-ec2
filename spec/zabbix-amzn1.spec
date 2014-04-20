@@ -1,4 +1,4 @@
-%define ver 2.2.2
+%define ver 2.2.3
 %define rel 1
 
 %define dist .ec2
@@ -16,6 +16,9 @@ Source0		: %{name}-%{version}.tar.gz
 Source1		: zabbix-web.conf
 Source2		: zabbix-logrotate.in
 Source3		: zabbix-java-gateway.init
+Source4		: zabbix-agent.init
+Source5		: zabbix-server.init
+Source6		: zabbix-proxy.init
 Patch0		: config.patch
 Patch1		: fonts-config.patch
 
@@ -102,7 +105,6 @@ Requires	: unixODBC
 Requires	: libssh2 >= 1.0.0
 Requires	: curl >= 7.13.1
 Requires	: OpenIPMI-libs >= 2.0.14
-Conflicts	: zabbix-proxy
 Requires(post)	: /sbin/chkconfig
 Requires(preun)	: /sbin/chkconfig
 Requires(preun)	: /sbin/service
@@ -229,7 +231,6 @@ Requires	: dejavu-sans-fonts
 Requires	: zabbix-web-database = %{version}-%{release}
 Requires(post)	: %{_sbindir}/update-alternatives
 Requires(preun)	: %{_sbindir}/update-alternatives
-Conflicts	: zabbix-proxy
 
 %description web
 The php frontend to display the zabbix web interface.
@@ -466,10 +467,10 @@ cat %{SOURCE2} | sed -e 's|COMPONENT|proxy|g' > \
      $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/zabbix-proxy
 
 # init scripts
-install -m 0755 -p misc/init.d/redhat/zabbix-server $RPM_BUILD_ROOT%{_sysconfdir}/init.d/zabbix-server
-install -m 0755 -p misc/init.d/redhat/zabbix-agent $RPM_BUILD_ROOT%{_sysconfdir}/init.d/zabbix-agent
-install -m 0755 -p misc/init.d/redhat/zabbix-proxy $RPM_BUILD_ROOT%{_sysconfdir}/init.d/zabbix-proxy
 install -m 0755 -p %{SOURCE3} $RPM_BUILD_ROOT%{_sysconfdir}/init.d/zabbix-java-gateway
+install -m 0755 -p %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/init.d/zabbix-agent
+install -m 0755 -p %{SOURCE5} $RPM_BUILD_ROOT%{_sysconfdir}/init.d/zabbix-server
+install -m 0755 -p %{SOURCE6} $RPM_BUILD_ROOT%{_sysconfdir}/init.d/zabbix-proxy
 
 # install server and proxy binaries
 %if %{build_server}
@@ -817,6 +818,12 @@ fi
 
 
 %changelog
+* Fri Apr 18 2014 IWAI, Masaharu <iwaim.sub@gmail.com> - 2.2.3-1.ec2
+- update to 2.2.3
+- sync upstream RPM spec
+ - remove conflicts with server and web from proxy package
+ - add init scripts (Source4, 5 and 6)
+
 * Wed Mar 12 2014 IWAI, Masaharu <iwaim.sub@gmail.com> - 2.2.2-1.ec2
 - initial build for Amazon EC2 amzn1
 
