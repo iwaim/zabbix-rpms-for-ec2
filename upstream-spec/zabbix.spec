@@ -1,5 +1,5 @@
 Name		: zabbix
-Version		: 2.2.3
+Version		: 2.2.4
 Release		: 1%{?dist}
 Summary		: Enterprise-class open source distributed monitoring solution.
 
@@ -812,6 +812,9 @@ fi
 
 
 %changelog
+* Thu Jun 26 2014 Kodai Terashima <kodai.terashima@zabbix.com> - 2.2.4-1
+- update to 2.2.4
+
 * Tue Apr 8 2014 Kodai Terashima <kodai.terashima@zabbix.com> - 2.2.3-1
 - fix map become unavailable when host is in maintenance (ZBX-7838)
 - enable to override some variables by sysconfig file (ZBX-7940)
