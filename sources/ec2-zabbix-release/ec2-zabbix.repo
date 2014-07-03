@@ -1,0 +1,12 @@
+[ec2-zabbix]
+name=Zabbix for Amazon Linux AMI $releasever - $basearch - unofficial
+baseurl=https://dl.dropboxusercontent.com/u/5110926/repos/amzn/1/$basearch/
+enabled=1
+gpgcheck=0
+
+[ec2-zabbix-source]
+name=Zabbix for Amazon Linux AMI $releasever - $basearch - Source - unofficial
+baseurl=https://dl.dropboxusercontent.com/u/5110926/repos/amzn/1/SRPMS/
+enabled=0
+gpgcheck=0
+
