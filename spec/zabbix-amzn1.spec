@@ -1,5 +1,5 @@
-%define ver 2.2.3
-%define rel 2
+%define ver 2.2.4
+%define rel 1
 
 %define dist .ec2
 %define amzn 1
@@ -818,6 +818,9 @@ fi
 
 
 %changelog
+* Thu Jul  3 2014 IWAI, Masaharu <iwaim.sub@gmail.com> - 2.2.4-1.ec2
+- update to 2.2.4
+
 * Fri Jun 20 2014 IWAI, Masaharu <iwaim.sub@gmail.com> - 2.2.3-2.ec2
 - building Zabbix server packages
 
