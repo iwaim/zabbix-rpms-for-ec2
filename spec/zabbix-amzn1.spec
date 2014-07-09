@@ -1,5 +1,5 @@
 %define ver 2.2.4
-%define rel 1
+%define rel 2
 
 %define dist .ec2
 %define amzn 1
@@ -578,7 +578,7 @@ fi
 /sbin/chkconfig --add zabbix-java-gateway || :
 
 %post web
-%if 0%{?fedora} || 0%{?rhel} >= 6
+%if 0%{?fedora} || 0%{?rhel} >= 6 || 0%{?amzn} >= 1
 /usr/sbin/update-alternatives --install %{_datadir}/%{name}/fonts/graphfont.ttf zabbix-web-font %{_datadir}/fonts/dejavu/DejaVuSans.ttf 10
 %else
 /usr/sbin/update-alternatives --install %{_datadir}/%{name}/fonts/graphfont.ttf zabbix-web-font %{_datadir}/%{name}/fonts/DejaVuSans.ttf 10
@@ -595,7 +595,7 @@ fi
 :
 
 %post web-japanese
-%if 0%{?fedora} || 0%{?rhel} >= 6
+%if 0%{?fedora} || 0%{?rhel} >= 6 || 0%{?amzn} >= 1
   /usr/sbin/update-alternatives --install %{_datadir}/%{name}/fonts/graphfont.ttf zabbix-web-font %{_datadir}/fonts/vlgothic/VL-PGothic-Regular.ttf 20
 %else
   /usr/sbin/update-alternatives --install %{_datadir}/%{name}/fonts/graphfont.ttf zabbix-web-font %{_datadir}/fonts/ipa-pgothic/ipagp.ttf 20
@@ -719,6 +719,15 @@ if [ $1 -gt 1 ]; then
 fi
 %endif
 
+
+%if 0%{?fedora} || 0%{?rhel} >= 6 || 0%{?amzn} >= 1
+%triggerpostun web -- zabbix-web < 2.2.4-2
+/usr/sbin/update-alternatives --remove zabbix-web-font %{_datadir}/%{name}/fonts/DejaVuSans.ttf
+
+%triggerpostun web-japanese -- zabbix-web-japanese < 2.2.4-2
+/usr/sbin/update-alternatives --remove zabbix-web-font %{_datadir}/fonts/ipa-pgothic/ipagp.ttf
+%endif
+
 %files
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING NEWS README
@@ -818,6 +827,11 @@ fi
 
 
 %changelog
+* Wed Jul  9 2014 IWAI, Masaharu <iwaim.sub@gmail.com> - 2.2.4-2.ec2
+- fix font path bug for alternatives
+ - update post script for zabbix-web and zabbix-web-japanese packages
+ - add triggerpostun script
+
 * Thu Jul  3 2014 IWAI, Masaharu <iwaim.sub@gmail.com> - 2.2.4-1.ec2
 - update to 2.2.4
 
